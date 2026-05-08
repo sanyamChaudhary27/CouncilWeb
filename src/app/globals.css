@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #fbfaf8;
+  --foreground: #1a1a1a;
+  --accent: #d97757;
+  --accent-muted: #e8e4db;
+  --border: #e5e2d9;
+  --panel-bg: rgba(255, 255, 255, 0.8);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow: hidden;
+}
+
+/* Research Journal Typography */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.prose {
+  line-height: 1.75;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 600;
+}
+
+.prose pre {
+  margin: 1.5em 0;
+  padding: 1.25em;
+  border-radius: 1rem;
+}
+
+.prose ul, .prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose blockquote {
+  font-style: italic;
+  border-left: 4px solid #d97757;
+  padding-left: 1.5em;
+  margin: 2em 0;
+  color: #4b5563;
+}
+
+.clean-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.accent-text {
+  color: var(--accent);
+}
+
+.muted-text {
+  color: #6b7280;
+}
+
+/* Custom scrollbar - Clean style */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+
+/* Transitions */
+.transition-all-200 {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
