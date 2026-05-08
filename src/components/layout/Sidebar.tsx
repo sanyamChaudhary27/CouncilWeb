@@ -20,37 +20,14 @@ const MANAGEMENT_NAV = [
   { id: 'catalog', label: 'Catalog', icon: Grid },
 ];
 
+import { NavButton } from './Sidebar/NavButton';
+import { ProjectItem } from './Sidebar/ProjectItem';
+
 export default function Sidebar() {
   const { activeView, setView, projects } = useCouncilStore();
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
-
-  const NavButton = ({ item, isActive, isNested = false }: { item: any, isActive: boolean, isNested?: boolean }) => {
-    const Icon = item.icon;
-    return (
-      <button
-        onClick={() => setView(item.id as any)}
-        className={`w-full flex items-center gap-3 ${isNested ? 'pl-10 pr-4 py-1.5' : 'px-4 py-2.5'} rounded-xl transition-all-300 group relative ${
-          isActive 
-            ? 'bg-[#fbfaf8] text-[#d97757] shadow-sm' 
-            : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
-        }`}
-      >
-        {Icon && <Icon size={isNested ? 14 : 18} className={isActive ? 'text-[#d97757]' : 'text-gray-400 group-hover:text-gray-600'} />}
-        <span className={`hidden lg:block font-medium ${isNested ? 'text-[11px] uppercase tracking-wider' : 'text-sm'} ${isActive ? 'text-gray-900' : ''}`}>
-          {item.label}
-        </span>
-        {isActive && !isNested && (
-          <motion.div 
-            layoutId="active-pill"
-            className="absolute left-0 w-1 h-5 bg-[#d97757] rounded-r-full"
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          />
-        )}
-      </button>
-    );
-  };
 
   return (
     <aside className="w-20 lg:w-64 h-full bg-white border-r border-[#e5e2d9] flex flex-col items-center lg:items-stretch py-8 z-40 overflow-y-auto scrollbar-none">
@@ -94,33 +71,15 @@ export default function Sidebar() {
           </div>
           <div className="space-y-4">
             {projects.map(project => (
-              <div key={project.id} className="space-y-1 group/project">
-                <div className="px-4 py-1 flex items-center justify-between text-gray-500">
-                  <div className="flex items-center gap-2">
-                    <Folder size={14} className="text-gray-400" />
-                    <span className="hidden lg:block text-[11px] font-bold tracking-widest uppercase">{project.name}</span>
-                  </div>
-                  <button 
-                    onClick={() => {
-                      setActiveProjectId(project.id);
-                      setIsSessionModalOpen(true);
-                    }}
-                    className="opacity-0 group-hover/project:opacity-100 text-gray-400 hover:text-[#d97757] transition-all"
-                  >
-                    <Plus size={12} />
-                  </button>
-                </div>
-                <div className="space-y-1">
-                  {project.sessions.map(session => (
-                    <NavButton 
-                      key={session.id} 
-                      item={{ id: session.id, label: session.name, icon: FileText }} 
-                      isActive={activeView === session.id} 
-                      isNested 
-                    />
-                  ))}
-                </div>
-              </div>
+              <ProjectItem 
+                key={project.id} 
+                project={project} 
+                activeView={activeView} 
+                onAddSession={(id) => {
+                  setActiveProjectId(id);
+                  setIsSessionModalOpen(true);
+                }}
+              />
             ))}
           </div>
         </div>

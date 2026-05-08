@@ -22,6 +22,7 @@ export interface CouncilSlice {
   appendTokenToMessage: (nodeId: string, token: string) => void;
   setConsensusScore: (score: number | null) => void;
   clearMessages: () => void;
+  autoAssembleCouncil: (intensity: 'low' | 'medium' | 'high' | 'xhigh' | 'max', task: string) => Promise<void>;
 }
 
 export const createCouncilSlice: StateCreator<CouncilSlice> = (set, get) => ({
@@ -94,4 +95,26 @@ export const createCouncilSlice: StateCreator<CouncilSlice> = (set, get) => ({
 
   setConsensusScore: (score) => set({ consensusScore: score }),
   clearMessages: () => set({ messages: [] }),
+  autoAssembleCouncil: async (intensity, task) => {
+    try {
+      const response = await fetch('/api/council/orchestrate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ intensity, task })
+      });
+      const data = await response.json();
+      
+      const newNodes: CouncilNode[] = data.agents.map((agent: any) => ({
+        ...agent,
+        id: Math.random().toString(36).substr(2, 9),
+        position: [(Math.random() - 0.5) * 10, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 5],
+        status: 'idle',
+        confidence: 0
+      }));
+      
+      set({ nodes: newNodes });
+    } catch (error) {
+      console.error("Auto-assembly failed", error);
+    }
+  },
 });
